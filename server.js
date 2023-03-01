@@ -5,36 +5,33 @@
 // https://pokeapi.co/docs/v2
 const express = require("express");
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const axios = require("axios");
 let random = 0;
 let Pokemons = [];
-async function makeRequest() {
-  for (let i = 0; i < 3; i++) {
+async function makeRequest(number) {
+  for (let i = 0; i < number; i++) {
     random = Math.floor(Math.random() * (150 - 1 + 1)) + 1;
-    // Configure request
     const config = {
-      method: "get", // request method (get, post, ...)
-      url: "https://pokeapi.co/api/v2/pokemon/" + random, // API link
+      method: "get",
+      url: "https://pokeapi.co/api/v2/pokemon/" + random,
     };
     let res = await axios(config);
-    //console.log("Response Data");
-    //console.log(res.data);
-    //console.log("--------------------");
-    // console.log("Extracted info from response data:");
-    // console.log("--------------------");
-    // console.log(`Pokemon Name: ${res.data.name}`);
-    // console.log(`Pokemon Order: ${res.data.order}`);
-    // console.log(`Pokemon Species URL: ${res.data.species.url}`);
     Pokemons[i] = res.data;
   }
 }
-
-// set the view engine to ejs
 app.set("view engine", "ejs");
-// use res.render to load up an ejs view file
-// index page
 app.get("/", async function (req, res) {
-  await makeRequest(); //value changes on page load
+  await makeRequest(3); //value changes on page load
+  res.render("pages/index", {
+    Pokemons: Pokemons,
+  });
+});
+app.post("/", async (req, res) => {
+  let numberofpokemons = req.body.numberofpokemons;
+  console.log("Number: " + numberofpokemons);
+  await makeRequest(numberofpokemons);
   res.render("pages/index", {
     Pokemons: Pokemons,
   });
