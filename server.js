@@ -29,6 +29,7 @@ app.get("/", async function (req, res) {
   });
 });
 app.post("/", async (req, res) => {
+  Pokemons = [];
   let numberofpokemons = req.body.numberofpokemons;
   console.log("Number: " + numberofpokemons);
   await makeRequest(numberofpokemons);
