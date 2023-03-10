@@ -26,6 +26,9 @@
       <div class="d-flex flex-column col-2">
       <input type="number" name="numberofpokemons" class="form-control" aria-describedby="subtext">
       <div id="subtext" class="form-text">Generate a random collection of pokemons</div>
+      <% if (numberlimitwarning){%>
+      <div id="subtext" class="form-text text-danger">Number Must Be Under 10</div>
+      <%}%>
       <button type="submit" class="btn btn-success my-2">See The Pokemons</button>
     </div>
   </div>

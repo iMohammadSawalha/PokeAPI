@@ -10,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 const axios = require("axios");
 let random = 0;
 let Pokemons = [];
+numberlimitwarning = false;
 async function makeRequest(number) {
   for (let i = 0; i < number; i++) {
     random = Math.floor(Math.random() * (150 - 1 + 1)) + 1;
@@ -30,11 +31,19 @@ app.get("/", async function (req, res) {
 });
 app.post("/", async (req, res) => {
   Pokemons = [];
-  let numberofpokemons = req.body.numberofpokemons;
+  let numberofpokemons = 0;
+  if (req.body.numberofpokemons < 10) {
+    numberlimitwarning = false;
+    numberofpokemons = req.body.numberofpokemons;
+  } else {
+    numberlimitwarning = true;
+    numberofpokemons = 3;
+  }
   console.log("Number: " + numberofpokemons);
   await makeRequest(numberofpokemons);
   res.render("pages/index", {
     Pokemons: Pokemons,
+    numberlimitwarning: numberlimitwarning,
   });
 });
 app.listen(3000);
