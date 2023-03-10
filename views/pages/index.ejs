@@ -8,22 +8,20 @@
       <h1>PokeAPI</h1>
       <div class="row justify-content-center">
         <% for(var i=0; i<Pokemons.length; i++) {%>
-          <div class="col-2 my-2">
-              <div class="card">
+              <div class="card d-flex col-6 col-sm-6 col-md-4 col-lg-2 col-xl-2 col-xxl-2 m-1">
                 <img src="<%=Pokemons[i].sprites.other.dream_world.front_default%>" class="card-img-top" alt="PokePic" width="200" height="200">
                 <div class="card-body">
                   <h5 class="card-title"><%=Pokemons[i].name%></h5>
                   <h3><span class="badge bg-secondary"><%=Pokemons[i].order%></span></h3>
                 </div>
               </div>
-          </div>
        <% } %>
     </div>
     <div class="p-3">
       <h4>Input Desired Number Of Pokemons</h4>
     <form action="/" method="post">
       <div class="row d-flex justify-content-center">
-      <div class="d-flex flex-column col-2">
+      <div class="d-flex flex-column col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
       <input type="number" name="numberofpokemons" class="form-control" aria-describedby="subtext">
       <div id="subtext" class="form-text">Generate a random collection of pokemons</div>
       <% if (numberlimitwarning){%>
