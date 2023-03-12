@@ -8,11 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const axios = require("axios");
-let random = 0;
-let Pokemons = [];
-let numberofpokemons = 0;
-numberlimitwarning = false;
-async function makeRequest(number) {
+async function makeRequest(number, Pokemons) {
+  let random = 0;
   for (let i = 0; i < number; i++) {
     random = Math.floor(Math.random() * (150 - 1 + 1)) + 1;
     const config = {
@@ -25,14 +22,18 @@ async function makeRequest(number) {
 }
 app.set("view engine", "ejs");
 app.get("/", async function (req, res) {
-  await makeRequest(3); //value changes on page load
+  let numberlimitwarning = false;
+  let Pokemons = [];
+  await makeRequest(3, Pokemons); //value changes on page load
   res.render("pages/index", {
     Pokemons: Pokemons,
     numberlimitwarning: numberlimitwarning,
   });
 });
 app.post("/", async (req, res) => {
-  Pokemons = [];
+  let numberofpokemons = 0;
+  let numberlimitwarning = false;
+  let Pokemons = [];
   if (req.body.numberofpokemons < 10) {
     numberlimitwarning = false;
     numberofpokemons = req.body.numberofpokemons;
@@ -41,7 +42,7 @@ app.post("/", async (req, res) => {
     numberofpokemons = 3;
   }
   console.log("Number: " + numberofpokemons);
-  await makeRequest(numberofpokemons);
+  await makeRequest(numberofpokemons, Pokemons);
   res.render("pages/index", {
     Pokemons: Pokemons,
     numberlimitwarning: numberlimitwarning,
